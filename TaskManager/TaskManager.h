@@ -27,7 +27,6 @@ public:
     bool isCompleted() const;
     void setCompleted(bool completed);
     void printTask() const;
-//    ~Task();
 };
 
 #endif // TASK_H

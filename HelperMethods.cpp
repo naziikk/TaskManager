@@ -18,3 +18,9 @@ int HelperMethods::getCorrectInput(int left, int right) {
     }
     return num;
 }
+void HelperMethods::printTasks(std::vector<Task> arr) {
+    for (int i = 0; i < arr.size(); i++) {
+        std::cout << "Task " << i + 1 << ":" << '\n';
+        arr[i].printTask();
+    }
+}

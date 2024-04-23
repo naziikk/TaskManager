@@ -9,6 +9,7 @@ public:
     static int main() {
         std::vector<Task> userTasksInfo;
         HelperMethods helper;
+        TaskProcessing processing;
         bool flag = true;
         while (flag) {
             std::cout << "Choose an option:\n"
@@ -22,10 +23,11 @@ public:
             int response = helper.getCorrectInput(1, 7);
             switch (response) {
                 case 1:
-
+                    processing.addTask(userTasksInfo);
+                    helper.printTasks(userTasksInfo);
                     break;
                 case 2:
-
+                    helper.printTasks(userTasksInfo);
                     break;
                 case 3:
 
