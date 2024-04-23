@@ -9,7 +9,8 @@ set(LIB_SOURCE_FILES
         TaskManager/TaskManager.cpp
         TaskManager/TaskManager.h
         TaskManager/TaskProcessing.cpp
-        TaskManager/TaskProcessing.h)
+        TaskManager/TaskProcessing.h
+)
 
 add_library(MyLibrary ${LIB_SOURCE_FILES})
 target_include_directories(MyLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/TaskManager)

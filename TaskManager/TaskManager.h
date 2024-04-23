@@ -20,9 +20,9 @@ public:
     void setTitle(const std::string &title);
     std::string getDescription() const;
     void setDescription(const std::string &description);
-    std::tm getStartDate() const;
+    const tm getStartDate() const;
     void setStartDate(const std::tm &start_date);
-    std::tm getEndDate() const;
+    const tm getEndDate() const;
     void setEndDate(const std::tm &end_date);
     bool isCompleted() const;
     void setCompleted(bool completed);

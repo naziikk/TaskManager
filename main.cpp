@@ -24,10 +24,9 @@ public:
             switch (response) {
                 case 1:
                     processing.addTask(userTasksInfo);
-                    helper.printTasks(userTasksInfo);
                     break;
                 case 2:
-                    helper.printTasks(userTasksInfo);
+                    processing.viewAllTasks(userTasksInfo);
                     break;
                 case 3:
 

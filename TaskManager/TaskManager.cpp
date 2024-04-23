@@ -22,7 +22,7 @@ void Task::setDescription(const std::string &description) {
     this->description = description;
 }
 
-std::tm Task::getStartDate() const {
+const tm Task::getStartDate() const {
     return start_date;
 }
 
@@ -30,7 +30,7 @@ void Task::setStartDate(const std::tm &start_date) {
     this->start_date = start_date;
 }
 
-std::tm Task::getEndDate() const {
+const tm Task::getEndDate() const {
     return end_date;
 }
 
