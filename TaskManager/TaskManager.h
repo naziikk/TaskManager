@@ -14,8 +14,8 @@ private:
     bool completed;
 
 public:
-    Task(std::string title, std::string description, std::tm start_date, std::tm end_date, bool completed);
 
+    Task(std::string title, std::string description, std::tm start_date, std::tm end_date, bool completed);
     std::string getTitle() const;
     void setTitle(const std::string &title);
     std::string getDescription() const;
@@ -26,7 +26,5 @@ public:
     void setEndDate(const std::tm &end_date);
     bool isCompleted() const;
     void setCompleted(bool completed);
-    void printTask() const;
 };
-
 #endif // TASK_H

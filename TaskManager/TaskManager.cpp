@@ -46,17 +46,3 @@ void Task::setCompleted(bool completed) {
     this->completed = completed;
 }
 
-void Task::printTask() const {
-    char buffer[80];
-    std::strftime(buffer, 80, "%Y-%m-%d", &start_date);
-    std::string start_str(buffer);
-    std::strftime(buffer, 80, "%Y-%m-%d", &end_date);
-    std::string end_str(buffer);
-
-    std::cout << "Title: " << title << std::endl;
-    std::cout << "Description: " << description << std::endl;
-    std::cout << "Start Date: " << start_str << std::endl;
-    std::cout << "End Date: " << end_str << std::endl;
-    std::cout << "Completed: " << (completed ? "Yes" : "No") << std::endl;
-}
-

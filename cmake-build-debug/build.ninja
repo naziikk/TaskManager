@@ -63,6 +63,13 @@ build CMakeFiles/untitled8.dir/HelperMethods.cpp.o: CXX_COMPILER__untitled8_unsc
   OBJECT_DIR = CMakeFiles/untitled8.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled8.dir
 
+build CMakeFiles/untitled8.dir/TaskManager/SQLite.cpp.o: CXX_COMPILER__untitled8_unscanned_Debug /Users/nazarzakrevskij/CLionProjects/TaskManagerProject/TaskManager/SQLite.cpp || cmake_object_order_depends_target_untitled8
+  DEP_FILE = CMakeFiles/untitled8.dir/TaskManager/SQLite.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -fcolor-diagnostics
+  INCLUDES = -I/Users/nazarzakrevskij/CLionProjects/TaskManagerProject/TaskManager
+  OBJECT_DIR = CMakeFiles/untitled8.dir
+  OBJECT_FILE_DIR = CMakeFiles/untitled8.dir/TaskManager
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target untitled8
@@ -71,9 +78,9 @@ build CMakeFiles/untitled8.dir/HelperMethods.cpp.o: CXX_COMPILER__untitled8_unsc
 #############################################
 # Link the executable untitled8
 
-build untitled8: CXX_EXECUTABLE_LINKER__untitled8_Debug CMakeFiles/untitled8.dir/main.cpp.o CMakeFiles/untitled8.dir/HelperMethods.cpp.o | libMyLibrary.a || libMyLibrary.a
+build untitled8: CXX_EXECUTABLE_LINKER__untitled8_Debug CMakeFiles/untitled8.dir/main.cpp.o CMakeFiles/untitled8.dir/HelperMethods.cpp.o CMakeFiles/untitled8.dir/TaskManager/SQLite.cpp.o | libMyLibrary.a || libMyLibrary.a
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6
-  LINK_LIBRARIES = libMyLibrary.a
+  LINK_LIBRARIES = libMyLibrary.a  -lsqlite3
   OBJECT_DIR = CMakeFiles/untitled8.dir
   POST_BUILD = :
   PRE_LINK = :
