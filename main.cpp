@@ -48,12 +48,12 @@ public:
                     case 2:
                         processing.viewAllTasks();
                         break;
-//                    case 3:
-//                        processing.viewTaskDetails();
-//                        break;
-//                    case 4:
-//                        processing.editTask();
-//                        break;
+                    case 3:
+                        processing.viewTaskDetails();
+                        break;
+                    case 4:
+                        processing.editTask();
+                        break;
 //                    case 5:
 //                        processing.deleteTask();
 //                        break;

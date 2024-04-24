@@ -42,7 +42,8 @@ void TaskProcessing::addTask() {
           << formatDateTime(task.getEndDate()) << "', "
           << (task.isCompleted() ? 1 : 0) << ");";
 
-    const char* q2 = query.str().c_str();
+    std::string queryString = query.str();
+    const char* q2 = queryString.c_str();
     std::cout << "Query: " << query.str() << std::endl;
     int rc = con.execute(q2, callback);
     if (rc == SQLITE_OK) {
@@ -57,49 +58,75 @@ void TaskProcessing::viewAllTasks() {
     const char* q1 = "SELECT * FROM tasks";
     int rc = con.execute(q1, callback1);
     if (rc == SQLITE_OK) {
-        std::cout << "Данные успешно выведены." << '\n';
+        std::cout << "Look at your tasks list." <<'\n';
+    }
+    else {
+        std::cerr << "\n";
     }
 }
-//void TaskProcessing::viewTaskDetails(std::vector<Task> arr) {
-//    if (arr.size() != 0) {
-//        std::cout << "Select which task details you want to see:\n";
-//        for (int i = 0; i < arr.size(); i++) {
-//            std::cout << i + 1 << '.' << ' ' << arr[i].getTitle() << '\n';
-//        }
-//        int response =  getCorrectResponse(1, arr.size());
-//        char start_buffer[80];
-//        const tm& start_date = arr[response - 1].getStartDate();
-//        std::strftime(start_buffer, 80, "%Y-%m-%d %H:%M:%S", &start_date);
-//        std::string start_str(start_buffer);
-//        char end_buffer[80];
-//        const tm& end_date = arr[response - 1].getStartDate();
-//        std::strftime(end_buffer, 80, "%Y-%m-%d %H:%M:%S", &end_date);
-//        std::string end_str(end_buffer);
-//        std::cout << "Title: " << arr[response - 1].getTitle() << std::endl;
-//        std::cout << "Description: " << arr[response - 1].getDescription() << std::endl;
-//        std::cout << "Start Date: " << start_str << std::endl;
-//        std::cout << "End Date: " << end_str << std::endl;
-//        std::cout << "Completed: " << (arr[response - 1].isCompleted() ? "Yes" : "No") << std::endl;
-//    }
-//    else {
-//        std::cout << "Arr is empty, add some tasks and repeat.\n";
-//    }
-//}
-//
-//void TaskProcessing::editTask(std::vector<Task> &arr) {
-//    if (arr.size() != 0) {
-//        std::cout << "Select which task details you want to see:\n";
-//        for (int i = 0; i < arr.size(); i++) {
-//            std::cout << i + 1 << '.' << ' ' << arr[i].getTitle() << '\n';
-//        }
-//        int response =  getCorrectResponse(1, arr.size());
-//        std::cout << "Are you sure? (y/n)\n";
-//        std::string ans;
-//    }
-//    else {
-//        std::cout << "Arr is empty, add some tasks and repeat.\n";
-//    }
-//}
+void TaskProcessing::viewTaskDetails() {
+    Sqlite con(dbPath);
+    const char* q1 = "SELECT * FROM tasks";
+    int rc = con.execute(q1, callback1);
+    if (rc == SQLITE_OK) {
+        std::cout << "Look at your tasks list." <<'\n';
+    }
+    else {
+        std::cerr << "\n";
+    }
+    std::cout << "Enter the title of task you want to see." << '\n';
+    std::string response;
+    std::cin >> response;
+    Sqlite::sqlSelectionRequest(response, con);
+}
+
+void TaskProcessing::editTask() {
+    Sqlite con(dbPath);
+    const char* q1 = "SELECT * FROM tasks";
+    int rc = con.execute(q1, callback1);
+    if (rc == SQLITE_OK) {
+        std::cout << "Look at your tasks list." <<'\n';
+    }
+    else {
+        std::cerr << "\n";
+    }
+    std::cout << "Enter the title of task you want to edit." << '\n';
+    std::string response;
+    std::cin >> response;
+    Sqlite::sqlSelectionRequest(response, con);
+    std::cout << "Choose the field you want to edit:\n"
+                 "1. title.\n"
+                 "2. description.\n"
+                 "3. start_date.\n"
+                 "4. end_date.\n";
+    int selection = getCorrectResponse(1, 4);
+    std::string ans;
+    switch (selection) {
+        case 1:
+            std::cout << "Enter new title:\n";
+            std::cin >> ans;
+            Sqlite::sqlEditingRequest("title" ,ans, response);
+            break;
+        case 2:
+            std::cout << "Enter new description:\n";
+            std::cin >> ans;
+            Sqlite::sqlEditingRequest("description" ,ans, response);
+            break;
+        case 3:
+            std::cout << "Enter new start_date:\n";
+            std::cin >> ans;
+            Sqlite::sqlEditingRequest("start_date",ans, response);
+            break;
+        case 4:
+            std::cout << "Enter new end_date:\n";
+            std::cin >> ans;
+            Sqlite::sqlEditingRequest("end_date" ,ans, response);
+            break;
+        default:
+            std::cout << "Wrong enter!\n";
+             break;
+    }
+}
 //std::vector<Task> TaskProcessing::deleteTask(std::vector<Task> &arr) {
 //    if (arr.size() != 0) {
 //        std::cout << "What task you want to delete:\n";
@@ -137,6 +164,7 @@ void TaskProcessing::viewAllTasks() {
 //        std::cout << "Arr is empty, add some tasks and repeat.\n";
 //    }
 //}
+
 //std::vector<Task> TaskProcessing::completeTask(std::vector<Task> &arr) {
 //    if (arr.size() != 0) {
 //        std::cout << "What task was completed?:\n";

@@ -1,5 +1,7 @@
 #include <sqlite3.h>
 #include <iostream>
+#include <sstream>
+#include "TaskProcessing.h"
 static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
     return 0;
 }
@@ -26,13 +28,39 @@ public:
             sqlite3_close(db);
         }
     }
-
     int execute(const char* sql, int (*callback)(void *, int, char **, char **), char* err = nullptr) {
         if (!db) {
             std::cerr << "Database is not open.\n";
             return SQLITE_ERROR;
         }
         return sqlite3_exec(db, sql, callback, 0, &err);
+    }
+    static void sqlSelectionRequest(std::string response, Sqlite con) {
+        std::stringstream query;
+        query << "SELECT * FROM tasks WHERE title = '" << response << "'";
+        std::string q = query.str();
+        const char* q2 = q.c_str();
+        int rc = con.execute(q2, callback1);
+        if (rc == SQLITE_OK) {
+            std::cout << "Look at your tasks details.\n";
+        }
+        else {
+            std::cerr << "\n";
+        }
+    }
+    static void sqlEditingRequest(std::string field, std::string newValue, std::string response) {
+        TaskProcessing task;
+        Sqlite con(task.dbPath);
+        std::stringstream query;
+        query << "UPDATE tasks SET " << field << " = '" << newValue << "' WHERE title = '" << response << "';";
+        std::cout << query.str() << '\n';
+        std::string q = query.str();
+        int rc = con.execute(q.c_str(), callback);
+        if (rc == SQLITE_OK) {
+            std::cout << "Task details successfully updated.\n";
+        } else {
+            std::cerr << "Error updating task details.\n";
+        }
     }
 };
 
