@@ -54,15 +54,15 @@ public:
                     case 4:
                         processing.editTask();
                         break;
-//                    case 5:
-//                        processing.deleteTask();
-//                        break;
-//                    case 6:
-//                        processing.completeTask();
-//                        break;
-//                    case 7:
-//                        flag = false;
-//                        break;
+                    case 5:
+                        processing.deleteTask();
+                        break;
+                    case 6:
+                        processing.completeTask();
+                        break;
+                    case 7:
+                        flag = false;
+                        break;
                     default:
                         std::cout << "Wrong enter!\n";
                         break;

@@ -12,6 +12,14 @@ static int callback1(void *NotUsed, int argc, char **argv, char **azColName) {
     std::cout << '\n';
     return 0;
 }
+static int callback2(void *NotUsed, int argc, char **argv, char **azColName) {
+    for (int i = 1; i < 2; i++) {
+        std::cout << azColName[i] << " = " << (argv[i] ? argv[i] : "NULL");
+    }
+    std::cout << '\n';
+    return 0;
+}
+
 class Sqlite {
 private:
     sqlite3* db;
@@ -58,8 +66,43 @@ public:
         int rc = con.execute(q.c_str(), callback);
         if (rc == SQLITE_OK) {
             std::cout << "Task details successfully updated.\n";
-        } else {
+        }
+        else {
             std::cerr << "Error updating task details.\n";
+        }
+    }
+    static void sqlDeletingRequest(std::string response) {
+        TaskProcessing task;
+        Sqlite con(task.dbPath);
+        std::stringstream query;
+        query << "DELETE FROM tasks WHERE title = '" << response << "';";
+        std::string q = query.str();
+        int rc = con.execute(q.c_str(), callback);
+        if (rc == SQLITE_OK) {
+            std::ostringstream oss;
+            oss << "Task |" << response << "| has been deleted.";
+            std::string result = oss.str();
+            std::cout << result << std::endl;
+        }
+        else {
+            std::cerr << "Error deleting task.\n";
+        }
+    }
+    static void sqlCompletingRequest(std::string response) {
+        TaskProcessing task;
+        Sqlite con(task.dbPath);
+        std::stringstream query;
+        query << "DELETE FROM tasks WHERE title = '" << response << "';";
+        std::string q = query.str();
+        int rc = con.execute(q.c_str(), callback);
+        if (rc == SQLITE_OK) {
+            std::ostringstream oss;
+            oss << "You have completed |" << response << "|, task has been deleted.";
+            std::string result = oss.str();
+            std::cout << result << std::endl;
+        }
+        else {
+            std::cerr << "Error completing task.\n";
         }
     }
 };

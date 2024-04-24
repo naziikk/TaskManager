@@ -44,7 +44,7 @@ void TaskProcessing::addTask() {
 
     std::string queryString = query.str();
     const char* q2 = queryString.c_str();
-    std::cout << "Query: " << query.str() << std::endl;
+    std::cout << "Query: " << query.str() << '\n';
     int rc = con.execute(q2, callback);
     if (rc == SQLITE_OK) {
         std::cout << "Task successfully added to the database.\n";
@@ -67,32 +67,32 @@ void TaskProcessing::viewAllTasks() {
 void TaskProcessing::viewTaskDetails() {
     Sqlite con(dbPath);
     const char* q1 = "SELECT * FROM tasks";
-    int rc = con.execute(q1, callback1);
+    int rc = con.execute(q1, callback2);
     if (rc == SQLITE_OK) {
         std::cout << "Look at your tasks list." <<'\n';
     }
     else {
         std::cerr << "\n";
     }
-    std::cout << "Enter the title of task you want to see." << '\n';
+    std::cout << "Enter the title of the task you want to see." << '\n';
     std::string response;
-    std::cin >> response;
+    std::getline(std::cin >> std::ws, response);
     Sqlite::sqlSelectionRequest(response, con);
 }
 
 void TaskProcessing::editTask() {
     Sqlite con(dbPath);
     const char* q1 = "SELECT * FROM tasks";
-    int rc = con.execute(q1, callback1);
+    int rc = con.execute(q1, callback2);
     if (rc == SQLITE_OK) {
         std::cout << "Look at your tasks list." <<'\n';
     }
     else {
         std::cerr << "\n";
     }
-    std::cout << "Enter the title of task you want to edit." << '\n';
+    std::cout << "Enter the title of the task you want to edit." << '\n';
     std::string response;
-    std::cin >> response;
+    std::getline(std::cin >> std::ws, response);
     Sqlite::sqlSelectionRequest(response, con);
     std::cout << "Choose the field you want to edit:\n"
                  "1. title.\n"
@@ -104,22 +104,22 @@ void TaskProcessing::editTask() {
     switch (selection) {
         case 1:
             std::cout << "Enter new title:\n";
-            std::cin >> ans;
+            std::getline(std::cin >> std::ws, ans);
             Sqlite::sqlEditingRequest("title" ,ans, response);
             break;
         case 2:
             std::cout << "Enter new description:\n";
-            std::cin >> ans;
+            std::getline(std::cin >> std::ws, ans);
             Sqlite::sqlEditingRequest("description" ,ans, response);
             break;
         case 3:
             std::cout << "Enter new start_date:\n";
-            std::cin >> ans;
+            std::getline(std::cin >> std::ws, ans);
             Sqlite::sqlEditingRequest("start_date",ans, response);
             break;
         case 4:
             std::cout << "Enter new end_date:\n";
-            std::cin >> ans;
+            std::getline(std::cin >> std::ws, ans);
             Sqlite::sqlEditingRequest("end_date" ,ans, response);
             break;
         default:
@@ -127,81 +127,58 @@ void TaskProcessing::editTask() {
              break;
     }
 }
-//std::vector<Task> TaskProcessing::deleteTask(std::vector<Task> &arr) {
-//    if (arr.size() != 0) {
-//        std::cout << "What task you want to delete:\n";
-//        for (int i = 0; i < arr.size(); i++) {
-//            std::cout << i + 1 << '.' << ' ' << arr[i].getTitle() << '\n';
-//        }
-//        int response = getCorrectResponse(1, arr.size());
-//        std::cout << "Are you sure? (y/n)\n";
-//        std::string ans;
-//        std::vector<Task> newarr;
-//        if (ans == "Y" || ans == "y") {
-//            for (int i = 0; i < arr.size(); i++) {
-//                if (i != response - 1) {
-//                    newarr.push_back(arr[i]);
-//                }
-//            }
-//            for (int i = 0; i < arr.size(); i++) {
-//                if (i != response - 1) {
-//                    newarr.push_back(arr[i]);
-//                }
-//            }
-//        }
-//        else {
-//            std::cout << "Select one more time:";
-//            response = getCorrectResponse(1, arr.size());
-//            for (int i = 0; i < arr.size(); i++) {
-//                if (i != response - 1) {
-//                    newarr.push_back(arr[i]);
-//                }
-//            }
-//        }
-//        return newarr;
-//    }
-//    else {
-//        std::cout << "Arr is empty, add some tasks and repeat.\n";
-//    }
-//}
+void TaskProcessing::deleteTask() {
+    Sqlite con(dbPath);
+    const char* q1 = "SELECT * FROM tasks";
+    int rc = con.execute(q1, callback2);
+    if (rc == SQLITE_OK) {
+        std::cout << "Look at your tasks list." <<'\n';
+    }
+    else {
+        std::cerr << "\n";
+    }
+    std::cout << "What task you want to delete? (enter the title):\n";
+    std::string response;
+    std::getline(std::cin >> std::ws, response);
+    std::cout << "Are you sure? (y/n)\n";
+    std::string ans;
+    std::cin >> ans;
+    if (ans == "Y" || ans == "y") {
+        Sqlite::sqlDeletingRequest(response);
+    }
+    else {
+        std::cout << "Select one more time:";
+        std::getline(std::cin >> std::ws, response);
+        Sqlite::sqlDeletingRequest(response);
+    }
+}
 
-//std::vector<Task> TaskProcessing::completeTask(std::vector<Task> &arr) {
-//    if (arr.size() != 0) {
-//        std::cout << "What task was completed?:\n";
-//        for (int i = 0; i < arr.size(); i++) {
-//            std::cout << i + 1 << '.' << ' ' << arr[i].getTitle() << '\n';
-//        }
-//        int response = getCorrectResponse(1, arr.size());
-//        std::cout << "Are you sure? (y/n)\n";
-//        std::string ans;
-//        std::vector<Task> newarr;
-//        if (ans == "Y" || ans == "y") {
-//            for (int i = 0; i < arr.size(); i++) {
-//                if (i != response - 1) {
-//                    newarr.push_back(arr[i]);
-//                }
-//            }
-//            for (int i = 0; i < arr.size(); i++) {
-//                if (i != response - 1) {
-//                    newarr.push_back(arr[i]);
-//                }
-//            }
-//        }
-//        else {
-//            std::cout << "Select one more time:";
-//            response =  getCorrectResponse(1, arr.size());
-//            for (int i = 0; i < arr.size(); i++) {
-//                if (i != response - 1) {
-//                    newarr.push_back(arr[i]);
-//                }
-//            }
-//        }
-//        return newarr;
-//    }
-//    else {
-//        std::cout << "Arr is empty, add some tasks and repeat.\n";
-//    }
-//}
+void TaskProcessing::completeTask() {
+    Sqlite con(dbPath);
+    const char* q1 = "SELECT * FROM tasks";
+    int rc = con.execute(q1, callback2);
+    if (rc == SQLITE_OK) {
+        std::cout << "Look at your tasks list." <<'\n';
+    }
+    else {
+        std::cerr << "\n";
+    }
+    std::cout << "What task have you completed? (enter the title):\n";
+    std::string response;
+    std::getline(std::cin >> std::ws, response);
+    std::cout << "Are you sure? (y/n)\n";
+    std::string ans;
+    std::cin >> ans;
+    if (ans == "Y" || ans == "y") {
+        Sqlite::sqlCompletingRequest(response);
+    }
+    else {
+        std::cout << "Select one more time:";
+        std::getline(std::cin >> std::ws, response);
+        Sqlite::sqlCompletingRequest(response);
+    }
+}
+
 int TaskProcessing::getCorrectResponse(int left, int right) {
     int num;
     while (true) {
