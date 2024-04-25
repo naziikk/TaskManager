@@ -12,29 +12,48 @@ std::string TaskProcessing::formatDateTime(const std::tm& datetime) {
     oss << std::put_time(&datetime, "%Y-%m-%d %H:%M:%S");
     return oss.str();
 }
-void TaskProcessing::addTask() {
+tm inputDateTime() {
+    tm date{};
+    bool flag;
+    do {
+        std::cin >> date.tm_year >> date.tm_mon >> date.tm_mday
+                 >> date.tm_hour >> date.tm_min ;
+        date.tm_year -= 1900;
+        date.tm_mon -= 1;
+        flag = !(std::cin.fail() || date.tm_mon < 0 || date.tm_mon > 11 ||
+                       date.tm_mday < 1 || date.tm_mday > 31 ||
+                       date.tm_hour < 0 || date.tm_hour > 23 ||
+                       date.tm_min < 0 || date.tm_min > 59);
+        if (!flag) {
+            std::cout << "Invalid input. Please enter date and time in correct format.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    } while (!flag);
+    return date;
+}
+
+void TaskProcessing::addTask() const {
     std::string title;
     std::string description;
-    std::tm start_date;
-    std::tm end_date;
-    std::cout << "Enter title:\n";
+    std::tm start_date{};
+    std::tm end_date{};
+    std::cout << "Enter the title:\n";
     std::cin.ignore();
     std::getline(std::cin, title);
     std::cout << "Enter description:\n";
     std::getline(std::cin, description);
-    std::cout << "Enter start date (YYYY MM DD HH MM SS):\n";
-    std::cin >> start_date.tm_year >> start_date.tm_mon >> start_date.tm_mday
-             >> start_date.tm_hour >> start_date.tm_min >> start_date.tm_sec;
-    start_date.tm_year -= 1900;
-    start_date.tm_mon -= 1;
+    std::cout << "Enter start date (YYYY MM DD HH MM):\n";
+    start_date = inputDateTime();
+
     std::cout << "Enter end date (YYYY MM DD HH MM):\n";
-    std::cin >> end_date.tm_year >> end_date.tm_mon >> end_date.tm_mday
-             >> end_date.tm_hour >> end_date.tm_min;
-    end_date.tm_year -= 1900;
-    end_date.tm_mon -= 1;
-    Task task(title, description, start_date, end_date, 0);
+    end_date = inputDateTime();
+
+    Task task(title, description, start_date, end_date, false);
+    // connection to database
     Sqlite con(dbPath);
     std::ostringstream query;
+    // request to database
     query << "INSERT INTO tasks (title, description, start_date, end_date, completed) "
           << "VALUES ('" << task.getTitle() << "', '"
           << task.getDescription() << "', '"
@@ -46,6 +65,7 @@ void TaskProcessing::addTask() {
     const char* q2 = queryString.c_str();
     std::cout << "Query: " << query.str() << '\n';
     int rc = con.execute(q2, callback);
+    // check status
     if (rc == SQLITE_OK) {
         std::cout << "Task successfully added to the database.\n";
     }
@@ -53,7 +73,8 @@ void TaskProcessing::addTask() {
         std::cerr << "Error adding task to the database. \n";
     }
 }
-void TaskProcessing::viewAllTasks() {
+
+void TaskProcessing::viewAllTasks() const {
     Sqlite con(dbPath);
     const char* q1 = "SELECT * FROM tasks";
     int rc = con.execute(q1, callback1);
@@ -64,7 +85,7 @@ void TaskProcessing::viewAllTasks() {
         std::cerr << "\n";
     }
 }
-void TaskProcessing::viewTaskDetails() {
+void TaskProcessing::viewTaskDetails() const {
     Sqlite con(dbPath);
     const char* q1 = "SELECT * FROM tasks";
     int rc = con.execute(q1, callback2);
@@ -80,7 +101,7 @@ void TaskProcessing::viewTaskDetails() {
     Sqlite::sqlSelectionRequest(response, con);
 }
 
-void TaskProcessing::editTask() {
+void TaskProcessing::editTask() const {
     Sqlite con(dbPath);
     const char* q1 = "SELECT * FROM tasks";
     int rc = con.execute(q1, callback2);
@@ -127,7 +148,7 @@ void TaskProcessing::editTask() {
              break;
     }
 }
-void TaskProcessing::deleteTask() {
+void TaskProcessing::deleteTask() const {
     Sqlite con(dbPath);
     const char* q1 = "SELECT * FROM tasks";
     int rc = con.execute(q1, callback2);
@@ -153,7 +174,7 @@ void TaskProcessing::deleteTask() {
     }
 }
 
-void TaskProcessing::completeTask() {
+void TaskProcessing::completeTask() const {
     Sqlite con(dbPath);
     const char* q1 = "SELECT * FROM tasks";
     int rc = con.execute(q1, callback2);

@@ -7,6 +7,7 @@
 class Program {
 public:
     static int main() {
+        std::cout << "\033[1;35m";
         HelperMethods helper;
         TaskProcessing processing;
         Sqlite con(processing.dbPath);
@@ -23,12 +24,12 @@ public:
             std::cout << "Таблица tasks успешно создана или уже существует." << '\n';
         }
 
-        const char* q2 = "INSERT INTO tasks (title, description, start_date, end_date, completed) "
-                         "VALUES ('kill masha', 'i wanna kill her', '2024-04-25 10:00:00', '2024-04-30 20:00:00', 0);";
-        rc = con.execute(q2, callback);
-        if (rc == SQLITE_OK) {
-            std::cout << "Данные успешно добавлены в таблицу tasks." << '\n';
-        }
+//        const char* q2 = "INSERT INTO tasks (title, description, start_date, end_date, completed) "
+//                         "VALUES ('kill masha', 'i wanna kill her', '2024-04-25 10:00:00', '2024-04-30 20:00:00', 0);";
+//        rc = con.execute(q2, callback);
+//        if (rc == SQLITE_OK) {
+//            std::cout << "Данные успешно добавлены в таблицу tasks." << '\n';
+//        }
         bool flag = true;
         while (flag) {
             try {

@@ -80,7 +80,7 @@ public:
         int rc = con.execute(q.c_str(), callback);
         if (rc == SQLITE_OK) {
             std::ostringstream oss;
-            oss << "Task |" << response << "| has been deleted.";
+            oss << "Task ---(" << response << ")--- has been deleted.";
             std::string result = oss.str();
             std::cout << result << std::endl;
         }
@@ -97,7 +97,7 @@ public:
         int rc = con.execute(q.c_str(), callback);
         if (rc == SQLITE_OK) {
             std::ostringstream oss;
-            oss << "You have completed |" << response << "|, task has been deleted.";
+            oss << "You have completed ---(" << response << ")---, task has been deleted.";
             std::string result = oss.str();
             std::cout << result << std::endl;
         }

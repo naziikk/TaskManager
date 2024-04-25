@@ -4,7 +4,8 @@ project(TaskManagerProject)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(untitled8 main.cpp HelperMethods.cpp
-        TaskManager/SQLite.cpp)
+        TaskManager/SQLite.cpp
+)
 
 set(LIB_SOURCE_FILES
         TaskManager/TaskManager.cpp

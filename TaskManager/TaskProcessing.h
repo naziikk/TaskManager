@@ -6,15 +6,16 @@ class TaskProcessing {
 private:
 
 public:
-    void addTask();
-    void viewAllTasks();
-    void viewTaskDetails();
-    void editTask();
-    void deleteTask();
-    void completeTask();
-    int getCorrectResponse(int left, int right);
-    std::string formatDateTime(const std::tm& datetime);
+    void addTask() const;
+    void viewAllTasks() const;
+    void viewTaskDetails() const;
+    void editTask() const;
+    void deleteTask() const;
+    void completeTask() const;
+    static int getCorrectResponse(int left, int right);
+    static std::string formatDateTime(const std::tm& datetime);
     const char* dbPath = "/Users/nazarzakrevskij/CLionProjects/TaskManagerProject/UsersInfo.db";
+    tm validDateTime();
 };
 
 #endif //UNTITLED8_TASKPROCESSING_H
